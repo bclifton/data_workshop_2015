@@ -30,4 +30,4 @@ Links to the screen recordings will be posted here.
 
 ##Data Visualization
 
-coming soon
+[Final code for session 3](http://bl.ocks.org/bclifton/308a3231e56086d6afa9)
