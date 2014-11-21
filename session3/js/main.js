@@ -1,7 +1,7 @@
 
 var API_KEY = '';
 var API_ADDRESS = 'https://api.enigma.io/v2/data/' + API_KEY + '/us.gov.dod.salaries.2013';
-var LOCAL_DATA = 'assets/us-gov-cdc-food.csv';
+var LOCAL_DATA = 'data/us-gov-cdc-food.csv';
 
 $(document).ready(function() {
 	// console.log('Hi John');
