@@ -12,6 +12,7 @@ $(document).ready(function() {
 function getData() {
 	
 	d3.csv(LOCAL_DATA, function(data) {
+		// console.log(data);
 		processData(data);
 	});
 }
@@ -58,12 +59,12 @@ function processData(data) {
 
 	// The date needs to be formatted as an array for D3:
 	var processedData = [];
-	_.each(newData, function(value, key) {
+	_.each(newData, function(value, date) {
 		// console.log(key, value);
 
 		// create a simple object where the date is the key, and the totalill is the value:
 		var temp = {};
-		temp[key] = value;
+		temp[date] = value;
 
 		// push it into the processedData array:
 		processedData.push(temp);
@@ -92,4 +93,81 @@ function processData(data) {
 
 function drawBarGraph(data) {
 	console.log(data);
+
+	var margin = {top: 20,
+				right: 20,
+				bottom: 30,
+				left: 80};
+	var width = 960 - margin.left - margin.right;
+	var height = 500 - margin.top - margin.bottom;
+
+	var xScale = d3.time.scale()
+		.domain([
+			d3.min(data, function(d) { return new Date(d3.keys(d)[0]); }),
+			d3.max(data, function(d) { return new Date(d3.keys(d)[0]); })
+		])
+		.range([0, width]);
+
+	var yScale = d3.scale.linear()
+		.domain([
+			d3.min(data, function(d) { return d3.values(d)[0].totalill; }),
+			d3.max(data, function(d) { return d3.values(d)[0].totalill; }),
+		])
+		.range([height, 0]);
+
+	var xAxis = d3.svg.axis()
+		.scale(xScale)
+		.orient('bottom');
+
+	var yAxis = d3.svg.axis()
+		.scale(yScale)
+		.orient('left')
+		.ticks(10);
+
+
+	var svg = d3.select('body')
+		.append('svg')
+		.attr('width', width + margin.left + margin.right)
+		.attr('height', height + margin.top + margin.bottom)
+		.append('g')
+		.attr('transform', 'translate('+ margin.left + ',' + margin.top +')');
+
+	svg.append('g')
+		.attr('class', 'x axis')
+		.attr('transform', 'translate(0,'+ height +')')
+		.call(xAxis);
+
+	svg.append('g')
+		.attr('class', 'y axis')
+		.call(yAxis)
+		.append('text')
+		.attr('transform', 'rotate(-90)')
+		.attr('y', 6)
+		.attr('dy', '0.71em')
+		.style('text-anchor', 'end')
+		.text('Cases of people falling ill from foodborne illness.');
+
+	svg.selectAll('.bar')
+		.data(data)
+		.enter()
+		.append('rect')
+		.attr('class', 'bar')
+		.attr('x', function(d) { console.log(d); return xScale(new Date(d3.keys(d)[0]));})
+		.attr('y', function(d) { return yScale(d3.values(d)[0].totalill); })
+		.attr('width', '4')
+		.attr('height', function(d) { return height	- yScale(d3.values(d)[0].totalill);})
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

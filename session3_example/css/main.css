@@ -1,9 +1,12 @@
 .bar {
 	fill: steelblue;
+	stroke: 1px;
+	stroke-fill: white;
 }
 
 .bar:hover {
 	fill: brown;
+
 }
 
 .axis {
@@ -18,7 +21,9 @@
 }
 
 .x.axis path {
-	display: none;
+	fill: none;
+	stroke: #000;
+	/*display: none;*/
 }
 
 
